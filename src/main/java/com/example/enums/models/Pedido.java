@@ -15,12 +15,17 @@ public class Pedido implements Serializable {
     private Long id;
     private Instant moment;
 
+    @Enumerated(EnumType.STRING) // para salvar o valor do enum no banco de dados como String e não como inteiro
+    private PedidoStatus pedidoStatus;
+
     public Pedido() {
     }
 
-    public Pedido(Long id, Instant moment) {
+    public Pedido(Long id, Instant moment, PedidoStatus pedidoStatus) {
+
         this.id = id;
         this.moment = moment;
+        setPedidoStatus(pedidoStatus);
     }
 
     public Long getId() {
@@ -37,6 +42,18 @@ public class Pedido implements Serializable {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
+    }
+
+    public PedidoStatus getPedidoStatus() {
+
+        return PedidoStatus.valueOf(String.valueOf(pedidoStatus));
+    }
+
+    public void setPedidoStatus(PedidoStatus pedidoStatus) {
+        // Para garantir que o pedido não seja criado com um status nulo
+        if(pedidoStatus != null){
+            this.pedidoStatus = PedidoStatus.valueOf(pedidoStatus.getCode());
+        }
     }
 }
 
